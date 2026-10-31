@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Summary · SmartNumberChallenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell narrow-shell">
+        <nav class="topbar">
+            <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">✦</span> SmartNumber<span>Challenge</span></a>
+            <a class="nav-link" href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
+        </nav>
+        <section class="result-card">
+            <div class="card-icon">🎉</div>
+            <p class="eyebrow">SESSION COMPLETE</p>
+            <h1>Well played, <span>{{ summary.username }}!</span></h1>
+            <p class="muted">Your game summary has been saved to the leaderboard.</p>
+            <div class="result-score"><small>FINAL SCORE</small><strong>{{ summary.score }}</strong></div>
+            <div class="stats-grid result-stats">
+                <div class="stat-card"><small>WINS</small><strong>{{ summary.wins }}</strong></div>
+                <div class="stat-card"><small>LOSSES</small><strong>{{ summary.losses }}</strong></div>
+                <div class="stat-card"><small>ROUNDS</small><strong>{{ summary.total_rounds }}</strong></div>
+            </div>
+            <a class="btn btn-primary full" href="{{ url_for('leaderboard') }}">View leaderboard →</a>
+            <a class="text-button" href="{{ url_for('home') }}">Play again</a>
+        </section>
+        <footer>Every round makes you sharper.</footer>
+    </main>
+</body>
+</html>

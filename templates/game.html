@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play · SmartNumberChallenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <nav class="topbar">
+            <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">✦</span> SmartNumber<span>Challenge</span></a>
+            <a class="nav-link" href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
+        </nav>
+
+        <section class="play-layout">
+            <div class="play-heading">
+                <p class="eyebrow">{{ difficulty.label }} MODE</p>
+                <h1>You've got this, <span>{{ username }}.</span></h1>
+                <p class="muted">Guess the secret number between 1 and {{ max_number }}.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><small>YOUR SCORE</small><strong>{{ score }}</strong></div>
+                <div class="stat-card"><small>WINS</small><strong>{{ wins }}</strong></div>
+                <div class="stat-card"><small>LOSSES</small><strong>{{ losses }}</strong></div>
+                <div class="stat-card"><small>ROUNDS</small><strong>{{ total_rounds }}</strong></div>
+            </div>
+
+            <section class="game-card game-panel">
+                <div class="number-orb">?</div>
+                <h2>Find the secret number</h2>
+                <p class="muted">You have <b>{{ attempts_left }}</b> attempt(s) remaining.</p>
+
+                <div class="attempt-track" aria-label="Attempts remaining">
+                    {% for i in range(difficulty.attempts) %}
+                        <span class="{% if i < attempts_left %}active{% else %}used{% endif %}"></span>
+                    {% endfor %}
+                </div>
+
+                <div class="feedback {{ feedback_type }}">{{ feedback }}</div>
+
+                {% if not round_over %}
+                <form action="{{ url_for('submit_guess') }}" method="POST" class="guess-form">
+                    <label for="guess">Enter your guess</label>
+                    <div class="guess-row">
+                        <input id="guess" type="number" name="guess" min="1" max="{{ max_number }}" placeholder="Your number" required autofocus>
+                        <button class="btn btn-primary" type="submit">Guess</button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="round-actions">
+                    <form action="{{ url_for('next_round') }}" method="POST">
+                        <label for="difficulty" class="small-label">Next round difficulty</label>
+                        <select id="difficulty" name="difficulty">
+                            <option value="easy" {% if session_difficulty == 'easy' %}selected{% endif %}>Easy</option>
+                            <option value="medium" {% if session_difficulty == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="hard" {% if session_difficulty == 'hard' %}selected{% endif %}>Hard</option>
+                        </select>
+                        <button class="btn btn-primary full" type="submit">Play another round →</button>
+                    </form>
+                    <form action="{{ url_for('finish_game') }}" method="POST">
+                        <button class="btn btn-secondary full" type="submit">Finish & save score</button>
+                    </form>
+                </div>
+                {% endif %}
+            </section>
+
+            <form action="{{ url_for('finish_game') }}" method="POST" class="exit-form">
+                <button class="text-button" type="submit">Finish game and view final result</button>
+            </form>
+        </section>
+        <footer>Stay sharp. Trust your instincts.</footer>
+    </main>
+</body>
+</html>

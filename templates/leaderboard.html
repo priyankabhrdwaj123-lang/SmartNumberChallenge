@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard · SmartNumberChallenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell narrow-shell">
+        <nav class="topbar">
+            <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">✦</span> SmartNumber<span>Challenge</span></a>
+            <a class="nav-link" href="{{ url_for('home') }}">← Home</a>
+        </nav>
+
+        <section class="leaderboard-section">
+            <p class="eyebrow">THE BEST OF THE BEST</p>
+            <h1>🏆 Leaderboard</h1>
+            <p class="muted">Top 10 players ranked by score.</p>
+
+            <div class="leaderboard-card">
+                {% if players %}
+                    <div class="leader-row leader-head"><span>RANK / PLAYER</span><span>SCORE</span><span>WINS</span></div>
+                    {% for player in players %}
+                    <div class="leader-row">
+                        <span class="player-cell"><b class="rank">{{ loop.index }}</b><span><strong>{{ player.username|default('Player') }}</strong><small>{{ player.date|default('') }}</small></span></span>
+                        <strong class="score-cell">{{ player.score|default(0) }}</strong>
+                        <span>{{ player.wins|default(0) }}</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state"><span>🎮</span><h3>No scores yet</h3><p>Play your first round and claim the top spot!</p></div>
+                {% endif %}
+            </div>
+            <a class="btn btn-primary inline-btn" href="{{ url_for('home') }}">Play a game →</a>
+        </section>
+        <footer>Your name could be at the top.</footer>
+    </main>
+</body>
+</html>

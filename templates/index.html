@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartNumberChallenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <nav class="topbar">
+            <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">✦</span> SmartNumber<span>Challenge</span></a>
+            <a class="nav-link" href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">THINK • GUESS • WIN</p>
+                <h1>Your next <span>winning guess</span> starts here.</h1>
+                <p class="hero-text">Can you find the secret number before your attempts run out? Pick your level and challenge yourself.</p>
+
+                <div class="feature-row">
+                    <div class="feature"><strong>+10</strong><small>Points per win</small></div>
+                    <div class="feature"><strong>3</strong><small>Difficulty levels</small></div>
+                    <div class="feature"><strong>∞</strong><small>Rounds to play</small></div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="card-icon">🎯</div>
+                <p class="eyebrow">LET'S PLAY</p>
+                <h2>Start a new game</h2>
+                <p class="muted">Enter your name and choose your challenge.</p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('start_game') }}" method="POST" class="form-stack">
+                    <label for="username">Your username</label>
+                    <input id="username" type="text" name="username" maxlength="24" placeholder="e.g. Priyanka" required autocomplete="nickname">
+
+                    <label>Choose difficulty</label>
+                    <div class="difficulty-options">
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="easy" checked>
+                            <span><b>Easy</b><small>1–50 · 7 tries</small></span>
+                        </label>
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="medium">
+                            <span><b>Medium</b><small>1–100 · 5 tries</small></span>
+                        </label>
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="hard">
+                            <span><b>Hard</b><small>1–200 · 3 tries</small></span>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Start playing <span>→</span></button>
+                </form>
+            </div>
+        </section>
+
+        <footer>Made for curious minds. One guess can change everything.</footer>
+    </main>
+</body>
+</html>
